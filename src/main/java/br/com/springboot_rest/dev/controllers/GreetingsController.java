@@ -46,6 +46,7 @@ public class GreetingsController {
     	Usuario usuario = new Usuario();
     	usuario.setNome(nome);
     	
+    	
     	usuarioRepository.save(usuario); //grava no BD
     	
     	return "Ola fulano " + nome;
