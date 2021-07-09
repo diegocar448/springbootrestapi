@@ -38,6 +38,54 @@
 	<button type="button" class="btn btn-primary" onclick="salvarUsuario()">Salvar</button>
 	<button type="button" class="btn btn-secondary"
 		onclick="document.getElementById('formCadastroUser').reset()">Novo</button>
+	<button type="button" class="btn btn-danger" data-bs-toggle="modal"
+		data-bs-target="#exampleModal">Pesquisar</button>
+
+
+
+
+
+
+
+
+
+	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Pesquisa de usuario</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<form>
+						<div class="mb-3">
+							<label for="recipient-name" class="col-form-label">Informe o nome:</label>
+							<input type="text" class="form-control" id="nameBusca">
+						</div>
+						<button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
+					</form>
+					<table class="table" id="tabelaresultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Editar</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+
 
 
 
@@ -68,6 +116,46 @@
 
 
 	<script type="text/javascript">
+
+		function pesquisarUser(e) {
+			let nome = document.getElementById("nameBusca").value
+
+			if (nome != null && nome.trim() != '') {
+
+				$.ajax({
+					method: "GET",
+					url: "buscarPorNome",
+					data: { name: nome },
+					//data: JSON.stringify({ name: nome }),
+					//contentType: "application/json; charset=UTF-8",
+					success: function (response) {
+						document.getElementById("id").value = response.id
+
+						$("#tabelaresultados > tbody > tr").remove();
+						for (var i = 0; i < response.length; i++) {
+							$("#tabelaresultados > tbody").append(
+								`<tr>
+									<td>${response[i].id}</td>
+									<td>${response[i].nome}</td>
+									<td>
+										<button type="button" class="btn btn-primary">Ver</button>
+									</td>
+								</tr>`
+							)
+						}
+
+					}
+				}).fail(function (xhr, status, errorThrown) {
+					alert("Erro ao buscar usuário: " + xhr.responseText);
+				});
+
+			}
+		}
+
+
+
+
+
 
 		function salvarUsuario() {
 			let id = document.getElementById("id").value
