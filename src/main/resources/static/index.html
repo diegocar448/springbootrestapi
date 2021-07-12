@@ -11,10 +11,19 @@
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
 	<title>Teste</title>
+
+	<style type="text/css">
+		html {
+			margin-left: 5%;
+			margin-right: 5%;
+			margin-top: 5%;
+
+		}
+	</style>
 </head>
 
 <body>
-	<h1>Teste ç á à é</h1>
+	<h1>Spring Boot REST API CRUD</h1>
 
 
 
@@ -65,18 +74,20 @@
 						</div>
 						<button type="button" class="btn btn-success" onclick="pesquisarUser()">Buscar</button>
 					</form>
-					<table class="table" id="tabelaresultados">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Nome</th>
-								<th scope="col">Editar</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-						</tbody>
-					</table>
+					<div style="height:300px; overflow:scroll;">
+						<table class="table" id="tabelaresultados">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Editar</th>
+									<th scope="col">Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+							</tbody>
+						</table>
+					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" id="fecharModal" class="btn btn-secondary"
@@ -123,9 +134,10 @@
 
 		function botaoDeletarDaTela() {
 			let id = document.getElementById("id").value
-			deleteUser(id)
-
-			document.getElementById('formCadastroUser').reset()
+			if (id !== null || id !== "") {
+				deleteUser(id)
+				document.getElementById('formCadastroUser').reset()
+			}
 		}
 
 
@@ -234,6 +246,17 @@
 			let id = document.getElementById("id").value
 			let nome = document.getElementById("nome").value
 			let idade = document.getElementById("idade").value
+
+			if (nome == null || nome !== null && nome.trim() == "") {
+				alert("Informe o nome");
+				return;
+			}
+			if (idade == null || idade !== null && idade.trim() == "") {
+				alert("Informe o idade");
+				return;
+			}
+
+
 
 			$.ajax({
 				method: "POST",
